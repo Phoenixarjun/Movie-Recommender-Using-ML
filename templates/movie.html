@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block content %}
+<section class="movie-detail">
+    <div class="movie-header">
+        <h1>{{ movie.title }} <span class="year">({{ movie.year }})</span></h1>
+        <div class="movie-meta">
+            <span class="rating"><i class="fas fa-star"></i> {{ movie.rating }}</span>
+            <span class="runtime"><i class="fas fa-clock"></i> {{ movie.runtime }}</span>
+            <span class="genre"><i class="fas fa-tags"></i> {{ movie.genre }}</span>
+            <span class="votes"><i class="fas fa-users"></i> {{ movie.votes }} votes</span>
+        </div>
+    </div>
+    
+    <div class="movie-content">
+        <div class="movie-poster">
+            <img src="{{ movie.poster|default('data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27450%27 viewBox=%270 0 300 450%27><rect width=%27300%27 height=%27450%27 fill=%27%23f3f4f6%27/><text x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2720%27>Image Not Found</text></svg>') }}" 
+                             alt="{{ movie.title }}"
+                             onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27450%27 viewBox=%270 0 300 450%27><rect width=%27300%27 height=%27450%27 fill=%27%23f3f4f6%27/><text x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2720%27>Image Not Found</text></svg>'">
+        </div>
+        
+        <div class="movie-info">
+            <div class="info-section">
+                <h3><i class="fas fa-info-circle"></i> Overview</h3>
+                <p>{{ movie.plot }}</p>
+            </div>
+            
+            <div class="info-section">
+                <h3><i class="fas fa-user-tie"></i> Director</h3>
+                <p>{{ movie.director }}</p>
+            </div>
+            
+            <div class="info-section">
+                <h3><i class="fas fa-users"></i> Cast</h3>
+                <p>{{ movie.actors }}</p>
+            </div>
+            
+            <div class="info-section">
+                <h3><i class="fas fa-globe"></i> Country</h3>
+                <p>{{ movie.country }}</p>
+            </div>
+            
+            <div class="info-section">
+                <h3><i class="fas fa-language"></i> Language</h3>
+                <p>{{ movie.language }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="recommendations">
+    <h2>Similar Movies You Might Like</h2>
+    <div class="movies-grid" id="recommendations-container">
+        <!-- Recommendations will be loaded here -->
+    </div>
+</section>
+
+<script src="../static/script/movie.js"></script>
+{% endblock %}

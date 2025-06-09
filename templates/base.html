@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Movie Recommender{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">MovieRecommender</a>
+            <div class="nav-links">
+                <a href="/" class="{% if request.path == '/' %}active{% endif %}"><i class="fas fa-film"></i> All Movies</a>
+                <a href="/search_movies" class="{% if request.path == '/search_movies' %}active{% endif %}"><i class="fas fa-search"></i> Search Movies</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Created with <i class="fas fa-heart" style="color: #4CAF50;"></i> by Naresh B A</p>
+            <p>&copy; 2025 MovieRecommender. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../static/script/main.js"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Movie Recommendations{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Movie Recommender using ML</h1>
+        <p>Discover your next favorite movie. Explore the realm of fantasy and find similar movies to your liking.</p>
+    </div>
+</section>
+
+<section class="movies-section">
+    <h2>All Movies</h2>
+
+    <div id="loader" class="loader-container">
+        <div class="loader"></div>
+        <p class="loading-text">Loading movies...</p>
+    </div>
+
+    <div id="movies-container" class="movies-grid" style="display: none;"></div>
+</section>
+
+<div class="pagination-container" id="pagination" style="display: none;"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const loader = document.getElementById("loader");
+    const container = document.getElementById("movies-container");
+    const pagination = document.getElementById("pagination");
+
+    const MOVIES_PER_PAGE = 10;
+    let currentPage = 1;
+    let moviesData = [];
+
+    function displayMovies(page) {
+        container.innerHTML = '';
+        const start = (page - 1) * MOVIES_PER_PAGE;
+        const end = start + MOVIES_PER_PAGE;
+        const moviesToDisplay = moviesData.slice(start, end);
+
+        moviesToDisplay.forEach(movie => {
+            const movieCard = document.createElement('div');
+            movieCard.className = 'movie-card';
+            movieCard.innerHTML = `
+                <a href="/movie/${movie.id}">
+                    <div class="movie-poster-container">
+                        <img 
+                            src="${movie.poster || 'data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27450%27 viewBox=%270 0 300 450%27><rect width=%27300%27 height=%27450%27 fill=%27%23f3f4f6%27/><text x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2720%27>Image Not Found</text></svg>'}" 
+                            alt="${movie.title}" 
+                            class="movie-poster" 
+                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27300%27 height=%27450%27 viewBox=%270 0 300 450%27><rect width=%27300%27 height=%27450%27 fill=%27%23f3f4f6%27/><text x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2720%27>No Image</text></svg>'">
+                        <div class="movie-overlay">
+                            <div class="movie-rating"><i class="fas fa-star"></i> ${movie.rating}</div>
+                            <div class="movie-year">${movie.year}</div>
+                        </div>
+                    </div>
+                    <h3 class="movie-title">${movie.title}</h3>
+                </a>
+            `;
+            container.appendChild(movieCard);
+        });
+
+        createPaginationButtons();
+    }
+
+    function createPaginationButtons() {
+        const totalPages = Math.ceil(moviesData.length / MOVIES_PER_PAGE);
+        pagination.innerHTML = '';
+
+        const addButton = (label, page, isActive = false, isDisabled = false) => {
+            const btn = document.createElement('button');
+            btn.textContent = label;
+            btn.className = 'pagination-btn' + (isActive ? ' active' : '');
+            if (!isDisabled) {
+                btn.addEventListener('click', () => {
+                    currentPage = page;
+                    displayMovies(currentPage);
+                });
+            } else {
+                btn.disabled = true;
+                btn.classList.add('disabled');
+            }
+            pagination.appendChild(btn);
+        };
+
+        // Prev button
+        if (currentPage > 1) addButton('Prev', currentPage - 1);
+
+        if (totalPages <= 7) {
+            for (let i = 1; i <= totalPages; i++) {
+                addButton(i, i, i === currentPage);
+            }
+        } else {
+            addButton(1, 1, currentPage === 1);
+
+            if (currentPage > 3) {
+                const dots = document.createElement('span');
+                dots.textContent = '...';
+                dots.className = 'pagination-dots';
+                pagination.appendChild(dots);
+            }
+
+            const pageRange = [currentPage - 1, currentPage, currentPage + 1].filter(p => p > 1 && p < totalPages);
+            pageRange.forEach(p => addButton(p, p, p === currentPage));
+
+            if (currentPage < totalPages - 2) {
+                const dots = document.createElement('span');
+                dots.textContent = '...';
+                dots.className = 'pagination-dots';
+                pagination.appendChild(dots);
+            }
+
+            addButton(totalPages, totalPages, currentPage === totalPages);
+        }
+
+        // Next button
+        if (currentPage < totalPages) addButton('Next', currentPage + 1);
+
+        pagination.style.display = totalPages > 1 ? 'flex' : 'none';
+    }
+
+    fetch('/all-movies')
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+        })
+        .then(data => {
+            moviesData = data.movies;
+            loader.style.display = "none";
+            container.style.display = "flex";
+            displayMovies(currentPage);
+        })
+        .catch(error => {
+            console.error('Error loading movies:', error);
+            loader.style.display = "none";
+            container.style.display = "block";
+            container.innerHTML = '<p class="error-message">Failed to load movies. Please try again later.</p>';
+        });
+});
+
+</script>
+
+{% endblock %}
