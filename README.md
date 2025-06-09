@@ -29,16 +29,17 @@ Built with **FastAPI** for blazing-fast backend APIs, a sleek frontend using **H
 
 ## 📸 Demo
 
-![Screenshot 2025-06-09 135922](https://github.com/user-attachments/assets/c954269a-98f7-4a12-a859-7bc0f8d69a6a)
+![Screenshot 2025-06-09 140027](https://github.com/user-attachments/assets/0d26d6d7-b841-4f85-b1bb-6684c5edaad4)
 
 
-![Screenshot 2025-06-09 140035](https://github.com/user-attachments/assets/e4e436f0-222c-4061-9208-340bea964843)
+![Screenshot 2025-06-09 140035](https://github.com/user-attachments/assets/70332173-532d-4271-9b9e-16d67ca45b6d)
 
 
-![Screenshot 2025-06-09 140027](https://github.com/user-attachments/assets/6223d541-b7fc-461a-8615-58a5213412a0)
+![Screenshot 2025-06-09 135922](https://github.com/user-attachments/assets/cdd326a4-5d3b-40ce-93da-a2cc8c44d208)
 
 
-![Screenshot 2025-06-09 135952](https://github.com/user-attachments/assets/da41315f-80f2-44cb-9140-fb07a2389923)
+![Screenshot 2025-06-09 135952](https://github.com/user-attachments/assets/d6a232ee-526a-4a80-b59f-a60ab143b01b)
+
 
 
 ---
